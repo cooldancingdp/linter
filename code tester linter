@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tomato Game</title>
+  <style>
+    #container {
+      width: 400px;
+      height: 400px;
+      border: 1px solid black;
+      position: relative;
+    }
+    .tomato {
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <!-- Tomatoes will be placed here -->
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("container");
+      let isDragging = false;
+
+      container.addEventListener("mousedown", (event) => {
+        if (event.target.classList.contains("tomato")) {
+          isDragging = true;
+          event.target.style.zIndex = 9999; // Bring tomato to the front
+        }
+      });
+
+      container.addEventListener("mousemove", (event) => {
+        if (isDragging) {
+          const tomato = document.querySelector(".tomato:hover");
+          if (tomato) {
+            const rect = container.getBoundingClientRect();
+            tomato.style.left = `${event.clientX - rect.left - tomato.offsetWidth / 2}px`;
+            tomato.style.top = `${event.clientY - rect.top - tomato.offsetHeight / 2}px`;
+          }
+        }
+      });
+
+      container.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+
+      // Add tomatoes to the container
+      for (let i = 0; i < 5; i++) {
+        const tomato = document.createElement("div");
+        tomato.className = "tomato";
+        tomato.style.left = `${Math.random() * 350}px`; // Random initial position
+        tomato.style.top = `${Math.random() * 350}px`; // Random initial position
+        container.appendChild(tomato);
+      }
+    });
+  </script>
+</body>
+</html>
